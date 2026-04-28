@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 const contactLinks = [
   {
     name: 'Email',
@@ -32,9 +34,36 @@ const contactLinks = [
 ]
 
 export default function Contact() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  })
+  const [status, setStatus] = useState('')
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    
+    const { name, email, subject, message } = formData
+    const mailtoSubject = encodeURIComponent(subject || 'Contact from Portfolio')
+    const mailtoBody = encodeURIComponent(
+      `Hi Bryan,\n\n${message}\n\n---\nFrom: ${name}\nEmail: ${email}`
+    )
+    
+    window.location.href = `mailto:diazbnavarro@gmail.com?subject=${mailtoSubject}&body=${mailtoBody}`
+    
+    setStatus('success')
+    setTimeout(() => setStatus(''), 3000)
+  }
+
   return (
     <section id="contact" className="py-24 px-4 sm:px-6 lg:px-8 bg-card/30">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <div className="space-y-4 mb-12 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground">Get In Touch</h2>
           <div className="w-20 h-1 bg-primary rounded-full mx-auto"></div>
@@ -43,34 +72,122 @@ export default function Contact() {
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-3 gap-6">
-          {contactLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              target={link.href.startsWith('mailto') ? undefined : '_blank'}
-              rel={link.href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
-              className="group bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-all duration-300 text-center"
-            >
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors text-primary">
-                {link.icon}
+        <div className="grid lg:grid-cols-2 gap-12">
+          {/* Contact Form */}
+          <div className="bg-card border border-border rounded-2xl p-8">
+            <h3 className="text-xl font-semibold text-foreground mb-6">Send me a message</h3>
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="grid sm:grid-cols-2 gap-5">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-muted mb-2">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 bg-background border border-border rounded-lg text-foreground placeholder-muted/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
+                    placeholder="Your name"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-muted mb-2">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 bg-background border border-border rounded-lg text-foreground placeholder-muted/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
+                    placeholder="your@email.com"
+                  />
+                </div>
               </div>
-              <h3 className="text-lg font-semibold text-foreground mb-1">{link.name}</h3>
-              <p className="text-sm text-muted group-hover:text-primary transition-colors">{link.value}</p>
-            </a>
-          ))}
-        </div>
+              <div>
+                <label htmlFor="subject" className="block text-sm font-medium text-muted mb-2">
+                  Subject
+                </label>
+                <input
+                  type="text"
+                  id="subject"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 bg-background border border-border rounded-lg text-foreground placeholder-muted/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
+                  placeholder="What is this about?"
+                />
+              </div>
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium text-muted mb-2">
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                  rows={5}
+                  className="w-full px-4 py-3 bg-background border border-border rounded-lg text-foreground placeholder-muted/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors resize-none"
+                  placeholder="Your message..."
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full inline-flex items-center justify-center gap-2 px-8 py-3 bg-primary hover:bg-primary-hover text-white font-medium rounded-lg transition-all duration-200 hover:scale-[1.02]"
+              >
+                Send Message
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </button>
+              {status === 'success' && (
+                <p className="text-center text-green-400 text-sm">
+                  Opening your email client...
+                </p>
+              )}
+            </form>
+          </div>
 
-        <div className="mt-12 text-center">
-          <a
-            href="mailto:diazbnavarro@gmail.com"
-            className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-primary hover:bg-primary-hover text-white font-medium rounded-lg transition-all duration-200 hover:scale-105"
-          >
-            Say Hello
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
-          </a>
+          {/* Contact Info */}
+          <div className="space-y-6">
+            <div className="bg-card border border-border rounded-2xl p-8">
+              <h3 className="text-xl font-semibold text-foreground mb-6">Contact Information</h3>
+              <div className="space-y-4">
+                {contactLinks.map((link) => (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    target={link.href.startsWith('mailto') ? undefined : '_blank'}
+                    rel={link.href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
+                    className="group flex items-center gap-4 p-4 rounded-xl hover:bg-background/50 transition-colors"
+                  >
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors text-primary">
+                      {link.icon}
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-medium text-muted">{link.name}</h4>
+                      <p className="text-foreground group-hover:text-primary transition-colors">{link.value}</p>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20 rounded-2xl p-8">
+              <h3 className="text-xl font-semibold text-foreground mb-3">{"Let's work together!"}</h3>
+              <p className="text-muted">
+                {"I'm"} always interested in hearing about new projects and opportunities. Whether {"you're"} a company looking to hire or {"you're"} a fellow developer wanting to collaborate, {"I'd"} love to hear from you.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>

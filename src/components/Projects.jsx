@@ -12,7 +12,7 @@ const projects = [
     description:
       'A personal finance tracking application that allows users to monitor expenses, visualize financial data, and improve budgeting habits through interactive charts.',
     tech: ['React', 'Tailwind CSS', 'Context API', 'Recharts'],
-    live: 'https://fintrack-ejs952io9-diazbnavarro-7828s-projects.vercel.app',
+    live: 'https://portfolio-bryan-iota.vercel.app/',
     github: 'https://github.com/bruyi22/fintrack',
   },
 ]

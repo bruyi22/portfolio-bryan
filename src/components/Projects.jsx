@@ -6,6 +6,8 @@ const projects = [
     tech: ['React', 'Flask', 'PostgreSQL', 'SQLAlchemy', 'JWT', 'REST API'],
     live: 'https://helping-souls.onrender.com',
     github: 'https://github.com/bruyi22/helping-souls',
+    image: '/project-images/helping-souls.png',
+    imageAlt: 'Helping Souls home page',
   },
   {
     title: 'FinTrack',
@@ -14,6 +16,8 @@ const projects = [
     tech: ['React', 'Tailwind CSS', 'Context API', 'Recharts'],
     live: 'https://fintrack-chi-one.vercel.app/',
     github: 'https://github.com/bruyi22/fintrack',
+    image: '/project-images/fintrack.gif',
+    imageAlt: 'FinTrack dashboard preview',
   },
 ]
 
@@ -35,8 +39,13 @@ export default function Projects() {
               key={project.title}
               className="group bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-300"
             >
-              <div className="aspect-video bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-                <span className="text-4xl font-bold text-primary/50">{project.title.charAt(0)}</span>
+              <div className="aspect-video bg-gradient-to-br from-primary/20 to-accent/20 overflow-hidden">
+                <img
+                  src={project.image}
+                  alt={project.imageAlt}
+                  className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                />
               </div>
               <div className="p-6 space-y-4">
                 <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors">
